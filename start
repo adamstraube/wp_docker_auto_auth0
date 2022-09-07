@@ -1,0 +1,93 @@
+#!/bin/bash
+
+. ./.env
+
+function mkdirs {
+    echo "mkdir $LOCAL_DB_DIR"
+    mkdir -p $LOCAL_DB_DIR
+    echo "mkdir $LOCAL_WP_DIR"
+    mkdir -p $LOCAL_WP_DIR
+}
+
+function remove {
+    echo "* Removing containers *"
+    docker-compose down
+}
+
+function up {
+    echo "* Create docker containers *"
+    docker-compose -p ${PROJECT_NAME} up -d wordpress db phpmyadmin wordpress-toolbox
+}
+
+function stop {
+    echo "* Stopping containers *"
+    docker-compose -p ${PROJECT_NAME} stop
+}
+
+function delete_data {
+    rm -rf $LOCAL_DB_DIR
+    rm -rf $LOCAL_WP_DIR
+    docker-compose -p ${PROJECT_NAME} rm -f
+}
+
+function recreate {
+    delete_data
+    create
+}
+
+function create {
+    mkdirs
+    docker-compose -p ${PROJECT_NAME} up --force-recreate -d wordpress db phpmyadmin wordpress-toolbox
+}
+
+function install_wordpress {
+    echo "* Running Wordpress auto configuration *"
+    docker-compose -p ${PROJECT_NAME} run --rm wordpress-toolbox /bin/bash -c /install.sh
+    echo "* Finished Running Wordpress auto configuration *"
+}
+
+function logs {
+    docker-compose -p ${PROJECT_NAME} logs -f -t
+}
+
+case "$1" in
+# Bring up all containers in Docker
+    up)
+        up
+        ;;
+# Stop all containers (do not remove)
+    down)
+        stop
+        ;;
+# Stop all containers and remove instances from Docker (retain volumes and bind mounts)
+    remove)
+        remove
+        delete_data
+        ;;
+# Initial install of containers
+    create)
+        create
+        ;;
+# Perform configuration of Wordpress install
+    configure)
+        install_wordpress
+        up
+        ;;
+# Restart all containers
+    restart)
+        stop
+        up
+        ;;
+# Stop and remove all containers, delete all data and recreate all containers
+    recreate)
+        remove
+        recreate
+        ;;
+# Show logs for running containers
+    logs)
+        logs
+        ;;
+    *)
+        echo $"{up|down|remove|create|configure|restart|recreate}"
+        exit 1
+esac
