@@ -8,4 +8,3 @@ wp core install \
 
 wp option update siteurl "${WORDPRESS_WEBSITE_URL}";
 wp plugin install auth0 --activate
-wp rewrite structure "${WORDPRESS_WEBSITE_POST_URL_STRUCTURE}"

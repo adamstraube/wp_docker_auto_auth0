@@ -67,6 +67,7 @@ case "$1" in
 # Initial install of containers
     create)
         create
+        logs
         ;;
 # Perform configuration of Wordpress install
     configure)
