@@ -46,6 +46,10 @@ function install_wordpress {
     echo "* Finished Running Wordpress auto configuration *"
 }
 
+function cli {
+    docker-compose -p ${PROJECT_NAME} run --rm wordpress-toolbox /bin/bash
+}
+
 function logs {
     docker-compose -p ${PROJECT_NAME} logs -f -t
 }
@@ -88,7 +92,11 @@ case "$1" in
     logs)
         logs
         ;;
+# Run the toolbox CLI for manual intervention
+    cli)
+        cli
+        ;;
     *)
-        echo $"{up|down|remove|create|configure|restart|recreate}"
+        echo $"{up|down|remove|create|configure|restart|recreate|cli}"
         exit 1
 esac
