@@ -51,7 +51,7 @@ function cli {
 }
 
 function logs {
-    docker-compose -p ${PROJECT_NAME} logs -f -t
+    docker-compose -p ${PROJECT_NAME} logs -f -t 2>&1
 }
 
 case "$1" in
