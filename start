@@ -86,6 +86,7 @@ case "$1" in
 # Stop and remove all containers, delete all data and recreate all containers
     recreate)
         remove
+        delete_data
         recreate
         ;;
 # Show logs for running containers

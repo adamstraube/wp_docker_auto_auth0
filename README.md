@@ -8,7 +8,6 @@ Requirements:
 - Docker
 - Git
 
-Use the `start` script to trigger the install:
 
 1. Copy the .env.example to .env and configure
 ```
@@ -39,4 +38,4 @@ Wordpress will be ready when the `wordpress_1` stream will output something like
 ./start configure
 ```
 
-6. Open Wordpress in a browser `http://localhost:8081/wp-login.php`(port number is set in the WP_EXT_PORT variable in .env file. Change it to the port set)
+6. Open Wordpress admin login screen in a browser (Default is: `http://localhost:8081/wp-login.php` (port number is set in the `WP_EXT_PORT` variable in .env file. Change it to the port set). Username and password is set in the .env file as `WP_ADMIN_USER` and `WP_ADMIN_PASSWORD` respectively
