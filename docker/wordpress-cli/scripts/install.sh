@@ -8,4 +8,12 @@ wp core install \
 
 wp option update siteurl "${WORDPRESS_WEBSITE_URL}";
 wp option update users_can_register 1
-wp plugin install auth0 --activate
+
+# Source https://github.com/auth0/wordpress/issues/893#issuecomment-2100611538
+cd wp-content/plugins || exit
+composer require symfony/http-client nyholm/psr7 auth0/wordpress:^5.0 -n
+mkdir ./auth0
+cp -r ./vendor/auth0/wordpress/* ./auth0/
+mv ./vendor/ ./auth0/vendor/
+
+# wp plugin install auth0 --activate

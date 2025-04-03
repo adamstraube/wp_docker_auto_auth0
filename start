@@ -40,6 +40,14 @@ function create {
     docker-compose -p ${PROJECT_NAME} up --force-recreate -d wordpress db phpmyadmin wordpress-toolbox
 }
 
+function update_containers {
+    echo "* Retrieving latest docker container images. Recreating containers also"
+    docker-compose stop
+    docker-compose rm
+    docker-compose pull
+    docker-compose -p ${PROJECT_NAME} up -d --force-recreate wordpress db phpmyadmin wordpress-toolbox
+}
+
 function install_wordpress {
     echo "* Running Wordpress auto configuration *"
     docker-compose -p ${PROJECT_NAME} run --rm wordpress-toolbox /bin/bash -c /install.sh
@@ -93,11 +101,15 @@ case "$1" in
     logs)
         logs
         ;;
+# Pull the latest docker images
+    container_update)
+        update_containers
+        ;;
 # Run the toolbox CLI for manual intervention
     cli)
         cli
         ;;
     *)
-        echo $"{up|down|remove|create|configure|restart|recreate|cli}"
+        echo $"{up|down|remove|create|configure|restart|recreate|cli|container_update}"
         exit 1
 esac
