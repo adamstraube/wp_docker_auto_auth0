@@ -54,7 +54,7 @@ services:
       - type: bind
         source: ${LOCAL_WP_DIR}
         target: /var/www/html
-      - ~/extra_certificates.pem:/etc/pki/tls/certs/ca-bundle.crt
+      - ${EXTRA_CERT_LOCATION}:/etc/pki/tls/certs/ca-bundle.crt
     ports:
       - "${WP_EXT_PORT}:80"
     networks:
@@ -77,7 +77,7 @@ services:
       - db
     volumes:
       - ${LOCAL_WP_DIR}:/var/www/html
-      - ~/extra_certificates.pem:/etc/pki/tls/certs/ca-bundle.crt
+      - ${EXTRA_CERT_LOCATION}:/etc/pki/tls/certs/ca-bundle.crt
       - ./docker/wordpress-cli/scripts/install.sh:/install.sh
     working_dir: /var/www/html
     networks:
